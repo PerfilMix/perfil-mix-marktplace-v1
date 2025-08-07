@@ -5,6 +5,7 @@ import { ShoppingCart, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface PaymentButtonProps {
   accountId: string;
@@ -28,6 +29,7 @@ const PaymentButton = ({
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const handlePayment = async () => {
     if (!isAuthenticated) {
@@ -95,8 +97,8 @@ const PaymentButton = ({
       >
         <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
           <div className="flex items-center gap-2">
-            <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-            <span className="text-sm sm:text-lg">Comprar</span>
+            {!isMobile && <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />}
+            <span className="text-lg sm:text-lg">Comprar</span>
           </div>
           <span className="text-base sm:text-lg font-bold">
             {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
@@ -134,8 +136,8 @@ const PaymentButton = ({
       ) : (
         <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
           <div className="flex items-center gap-2">
-            <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-            <span className="text-sm sm:text-lg">Comprar</span>
+            {!isMobile && <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />}
+            <span className="text-lg sm:text-lg">Comprar</span>
           </div>
           <span className="text-base sm:text-lg font-bold">
             {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
