@@ -85,7 +85,7 @@ const PaymentButton = ({
     return (
       <Button
         onClick={handlePayment}
-        className="w-full py-4 font-semibold min-w-0 sm:py-6 px-4"
+        className="w-full py-3 font-semibold min-w-0 sm:py-6 px-3 text-sm sm:text-lg"
         style={{ backgroundColor: 'hsl(var(--button-purchase))', color: 'hsl(var(--button-success-text))' }}
         onMouseEnter={(e) => {
           e.currentTarget.style.backgroundColor = 'hsl(var(--button-purchase) / 0.9)';
@@ -95,12 +95,12 @@ const PaymentButton = ({
         }}
         size="lg"
       >
-        <div className="flex items-center justify-between w-full gap-3">
-          <div className="flex items-center gap-2">
-            {!isMobile && <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />}
-            <span className="text-lg font-semibold">Comprar</span>
+        <div className="flex items-center justify-between w-full gap-2">
+          <div className="flex items-center gap-1">
+            {!isMobile && <ShoppingCart className="h-3 w-3 sm:h-5 sm:w-5 flex-shrink-0" />}
+            <span className="text-sm sm:text-lg font-semibold">Comprar</span>
           </div>
-          <span className="text-lg font-bold whitespace-nowrap">
+          <span className="text-sm sm:text-lg font-bold whitespace-nowrap">
             {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
           </span>
         </div>
@@ -112,7 +112,7 @@ const PaymentButton = ({
     <Button
       onClick={handlePayment}
       disabled={disabled || isLoading}
-      className="w-full py-4 font-semibold disabled:opacity-50 min-w-0 sm:py-6 px-4"
+      className="w-full py-3 font-semibold disabled:opacity-50 min-w-0 sm:py-6 px-3 text-sm sm:text-lg"
       style={{ backgroundColor: 'hsl(var(--button-purchase))', color: 'hsl(var(--button-success-text))' }}
       onMouseEnter={(e) => {
         if (!disabled && !isLoading) {
@@ -128,16 +128,16 @@ const PaymentButton = ({
     >
       {isLoading ? (
         <div className="flex items-center justify-center w-full gap-2">
-          <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin flex-shrink-0" />
-          <span className="text-lg font-semibold">Redirecionando...</span>
+          <Loader2 className="h-3 w-3 sm:h-5 sm:w-5 animate-spin flex-shrink-0" />
+          <span className="text-sm sm:text-lg font-semibold">Redirecionando...</span>
         </div>
       ) : (
-        <div className="flex items-center justify-between w-full gap-3">
-          <div className="flex items-center gap-2">
-            {!isMobile && <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />}
-            <span className="text-lg font-semibold">Comprar</span>
+        <div className="flex items-center justify-between w-full gap-2">
+          <div className="flex items-center gap-1">
+            {!isMobile && <ShoppingCart className="h-3 w-3 sm:h-5 sm:w-5 flex-shrink-0" />}
+            <span className="text-sm sm:text-lg font-semibold">Comprar</span>
           </div>
-          <span className="text-lg font-bold whitespace-nowrap">
+          <span className="text-sm sm:text-lg font-bold whitespace-nowrap">
             {price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
           </span>
         </div>
