@@ -266,7 +266,7 @@ const AccountCard = memo(({
           </Button> : <>
             <PaymentButton accountId={account.id} accountName={account.nome} price={account.preco} currency="BRL" isAccountSold={account.status === 'vendido'} />
             
-            <Button variant="outline" onClick={() => navigate(`/comprar/${account.id}`)} className="w-full h-12 font-bold text-base transition-all duration-300 rounded-lg hover:shadow-lg hover:shadow-tech-highlight/20 hover:bg-tech-accent/10" style={{
+            <Button variant="outline" onClick={() => navigate(`/comprar/${account.id}`)} className="w-full md:w-80 md:mx-auto h-12 font-bold text-base transition-all duration-300 rounded-lg hover:shadow-lg hover:shadow-tech-highlight/20 hover:bg-tech-accent/10" style={{
           color: 'hsl(var(--button-outline-text))'
         }}>
               {isShopify ? "Detalhes da Loja" : "Detalhes da Conta"}
