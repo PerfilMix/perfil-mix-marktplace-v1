@@ -91,7 +91,7 @@ const AccountCard = memo(({
           <div className="flex-1 space-y-3 lg:space-y-6">
             {/* Informações de Preço */}
             <div className="space-y-2 lg:space-y-3">
-              <div className="flex justify-between items-center py-2 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10 px-[3px]">
+              <div className="flex justify-between items-center py-2 bg-tech-darker/50 rounded-lg border border-tech-accent/10 px-[3px] lg:px-[19px] mx-px">
                 <span className="text-gray-300 font-medium">País:</span>
                 <Badge className="border text-white font-medium px-3 py-1" style={{
                 backgroundColor: paisColor,
@@ -266,7 +266,7 @@ const AccountCard = memo(({
           </Button> : <>
             <PaymentButton accountId={account.id} accountName={account.nome} price={account.preco} currency="BRL" isAccountSold={account.status === 'vendido'} />
             
-            <Button variant="outline" onClick={() => navigate(`/comprar/${account.id}`)} className="w-full md:w-80 md:mx-auto h-12 font-bold text-base transition-all duration-300 rounded-lg hover:shadow-lg hover:shadow-tech-highlight/20 hover:bg-tech-accent/10" style={{
+            <Button variant="outline" onClick={() => navigate(`/comprar/${account.id}`)} className="w-full h-12 font-bold text-base transition-all duration-300 rounded-lg hover:shadow-lg hover:shadow-tech-highlight/20 hover:bg-tech-accent/10" style={{
           color: 'hsl(var(--button-outline-text))'
         }}>
               {isShopify ? "Detalhes da Loja" : "Detalhes da Conta"}
