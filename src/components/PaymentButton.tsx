@@ -65,8 +65,8 @@ const PaymentButton = ({
     }
   };
   if (isAccountSold) {
-    return <Button disabled className="w-full bg-gray-500 text-white text-lg py-6 font-semibold cursor-not-allowed" size="lg">
-        <ShoppingCart className="h-5 w-5 mr-2" />
+    return <Button disabled className="w-[280px] mx-auto h-12 bg-gray-500 text-white font-semibold cursor-not-allowed rounded-lg" size="lg">
+        <ShoppingCart className="h-4 w-4 mr-2" />
         Conta Vendida
       </Button>;
   }
@@ -78,22 +78,17 @@ const PaymentButton = ({
       e.currentTarget.style.backgroundColor = 'hsl(var(--button-purchase) / 0.9)';
     }} onMouseLeave={e => {
       e.currentTarget.style.backgroundColor = 'hsl(var(--button-purchase))';
-    }} size="lg" className="w-full md:w-80 md:mx-auto py-3 font-semibold min-w-0 sm:py-6 text-sm sm:text-lg px-[20px]">
-        <div className={`flex items-center w-full gap-2 ${isMobile ? 'justify-center' : 'justify-between px-[70px] mx-[240px]'}`}>
-          <div className="flex items-center gap-1">
-            {!isMobile && <ShoppingCart className="h-3 w-3 sm:h-5 sm:w-5 flex-shrink-0" />}
-            <span className="text-sm sm:text-lg font-semibold">Comprar</span>
-          </div>
-          <span className="text-sm sm:text-lg font-bold whitespace-nowrap">
-            {price.toLocaleString('pt-BR', {
+    }} size="lg" className="w-[280px] mx-auto h-12 font-semibold rounded-lg">
+        <div className="flex items-center justify-center gap-2">
+          <ShoppingCart className="h-4 w-4" />
+          <span className="font-semibold">Comprar {price.toLocaleString('pt-BR', {
             style: 'currency',
             currency: 'BRL'
-          })}
-          </span>
+          })}</span>
         </div>
       </Button>;
   }
-  return <Button onClick={handlePayment} disabled={disabled || isLoading} className="w-full md:w-80 md:mx-auto py-3 font-semibold disabled:opacity-50 min-w-0 sm:py-6 px-3 text-sm sm:text-lg" style={{
+  return <Button onClick={handlePayment} disabled={disabled || isLoading} className="w-[280px] mx-auto h-12 font-semibold disabled:opacity-50 rounded-lg" style={{
     backgroundColor: 'hsl(var(--button-purchase))',
     color: 'hsl(var(--button-success-text))'
   }} onMouseEnter={e => {
@@ -105,20 +100,15 @@ const PaymentButton = ({
       e.currentTarget.style.backgroundColor = 'hsl(var(--button-purchase))';
     }
   }} size="lg">
-      {isLoading ? <div className="flex items-center justify-center w-full gap-2">
-          <Loader2 className="h-3 w-3 sm:h-5 sm:w-5 animate-spin flex-shrink-0" />
-          <span className="text-sm sm:text-lg font-semibold">Redirecionando...</span>
-        </div> : <div className={`flex items-center w-full gap-2 ${isMobile ? 'justify-center' : 'justify-between'}`}>
-          <div className="flex items-center gap-1">
-            {!isMobile && <ShoppingCart className="h-3 w-3 sm:h-5 sm:w-5 flex-shrink-0" />}
-            <span className="text-sm sm:text-lg font-semibold">Comprar</span>
-          </div>
-          <span className="text-sm sm:text-lg font-bold whitespace-nowrap">
-            {price.toLocaleString('pt-BR', {
+      {isLoading ? <div className="flex items-center justify-center gap-2">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span className="font-semibold">Redirecionando...</span>
+        </div> : <div className="flex items-center justify-center gap-2">
+          <ShoppingCart className="h-4 w-4" />
+          <span className="font-semibold">Comprar {price.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
-        })}
-          </span>
+        })}</span>
         </div>}
     </Button>;
 };
