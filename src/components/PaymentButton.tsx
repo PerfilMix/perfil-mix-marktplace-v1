@@ -78,7 +78,7 @@ const PaymentButton = ({
       e.currentTarget.style.backgroundColor = 'hsl(var(--button-purchase) / 0.9)';
     }} onMouseLeave={e => {
       e.currentTarget.style.backgroundColor = 'hsl(var(--button-purchase))';
-    }} size="lg" className="w-full py-3 font-semibold min-w-0 sm:py-6 text-sm sm:text-lg px-[20px]">
+    }} size="lg" className="w-full md:w-80 md:mx-auto py-3 font-semibold min-w-0 sm:py-6 text-sm sm:text-lg px-[20px]">
         <div className={`flex items-center w-full gap-2 ${isMobile ? 'justify-center' : 'justify-between px-[70px] mx-[240px]'}`}>
           <div className="flex items-center gap-1">
             {!isMobile && <ShoppingCart className="h-3 w-3 sm:h-5 sm:w-5 flex-shrink-0" />}
@@ -93,7 +93,7 @@ const PaymentButton = ({
         </div>
       </Button>;
   }
-  return <Button onClick={handlePayment} disabled={disabled || isLoading} className="w-full py-3 font-semibold disabled:opacity-50 min-w-0 sm:py-6 px-3 text-sm sm:text-lg" style={{
+  return <Button onClick={handlePayment} disabled={disabled || isLoading} className="w-full md:w-80 md:mx-auto py-3 font-semibold disabled:opacity-50 min-w-0 sm:py-6 px-3 text-sm sm:text-lg" style={{
     backgroundColor: 'hsl(var(--button-purchase))',
     color: 'hsl(var(--button-success-text))'
   }} onMouseEnter={e => {
