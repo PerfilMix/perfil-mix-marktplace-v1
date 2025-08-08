@@ -79,7 +79,7 @@ const PaymentButton = ({
     }} onMouseLeave={e => {
       e.currentTarget.style.backgroundColor = 'hsl(var(--button-purchase))';
     }} size="lg" className="w-full py-3 font-semibold min-w-0 sm:py-6 text-sm sm:text-lg px-[20px]">
-        <div className="flex items-center justify-between w-full gap-2 px-[70px] mx-[240px]">
+        <div className={`flex items-center w-full gap-2 ${isMobile ? 'justify-center' : 'justify-between px-[70px] mx-[240px]'}`}>
           <div className="flex items-center gap-1">
             {!isMobile && <ShoppingCart className="h-3 w-3 sm:h-5 sm:w-5 flex-shrink-0" />}
             <span className="text-sm sm:text-lg font-semibold">Comprar</span>
@@ -108,7 +108,7 @@ const PaymentButton = ({
       {isLoading ? <div className="flex items-center justify-center w-full gap-2">
           <Loader2 className="h-3 w-3 sm:h-5 sm:w-5 animate-spin flex-shrink-0" />
           <span className="text-sm sm:text-lg font-semibold">Redirecionando...</span>
-        </div> : <div className="flex items-center justify-between w-full gap-2">
+        </div> : <div className={`flex items-center w-full gap-2 ${isMobile ? 'justify-center' : 'justify-between'}`}>
           <div className="flex items-center gap-1">
             {!isMobile && <ShoppingCart className="h-3 w-3 sm:h-5 sm:w-5 flex-shrink-0" />}
             <span className="text-sm sm:text-lg font-semibold">Comprar</span>
