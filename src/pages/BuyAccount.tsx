@@ -700,9 +700,9 @@ const BuyAccount = () => {
               
               {/* Botões lado a lado */}
               <div className="flex gap-3 w-full md:justify-center">
-                <Button variant="outline" className="flex-1 md:flex-none md:w-40 border-tech-accent/50 text-tech-highlight hover:bg-tech-accent/20 hover:text-white hover:border-tech-highlight transition-all duration-300" onClick={() => navigate("/")}>Voltar</Button>
+                <Button variant="outline" className="flex-1 md:flex-none md:w-32 md:px-4 border-tech-accent/50 text-tech-highlight hover:bg-tech-accent/20 hover:text-white hover:border-tech-highlight transition-all duration-300" onClick={() => navigate("/")}>Voltar</Button>
                 
-                <Button variant="outline" className="flex-1 md:flex-none md:w-48 border-tech-accent/50 text-tech-highlight hover:bg-tech-accent/20 hover:text-white hover:border-tech-highlight transition-all duration-300" onClick={handleCopyAccountInfo}>
+                <Button variant="outline" className="flex-1 md:flex-none md:w-40 md:px-4 border-tech-accent/50 text-tech-highlight hover:bg-tech-accent/20 hover:text-white hover:border-tech-highlight transition-all duration-300" onClick={handleCopyAccountInfo}>
                   <Copy className="h-4 w-4 mr-2" />
                   Compartilhar Link
                 </Button>
