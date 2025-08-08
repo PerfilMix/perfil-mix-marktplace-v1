@@ -745,7 +745,7 @@ const BuyAccount = () => {
                   onClick={handleCopyAccountInfo}
                 >
                   <Copy className="h-4 w-4 mr-2" />
-                  Copiar
+                  Compartilhar link
                 </Button>
               </div>
               
