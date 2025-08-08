@@ -704,7 +704,7 @@ const BuyAccount = () => {
                 
                 <Button variant="outline" className="flex-1 border-tech-accent/50 text-tech-highlight hover:bg-tech-accent/20 hover:text-white hover:border-tech-highlight transition-all duration-300" onClick={handleCopyAccountInfo}>
                   <Copy className="h-4 w-4 mr-2" />
-                  Copiar
+                  Compartilhar Link
                 </Button>
               </div>
               
