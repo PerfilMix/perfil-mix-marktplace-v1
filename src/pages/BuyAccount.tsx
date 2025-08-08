@@ -15,7 +15,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import SellerInfo from "@/components/SellerInfo";
 import ImageViewer from "@/components/ImageViewer";
-
 interface TextSettings {
   footer_company_name: string;
 }
@@ -40,7 +39,6 @@ const BuyAccount = () => {
   const [textSettings, setTextSettings] = useState<TextSettings>(defaultTextSettings);
   const [brandingSettings, setBrandingSettings] = useState<BrandingSettings>(defaultBrandingSettings);
   const [showImageViewer, setShowImageViewer] = useState(false);
-  
   const {
     toast
   } = useToast();
@@ -74,21 +72,18 @@ const BuyAccount = () => {
 
         // Prepare content
         const title = `${account.nome} - ${brandingSettings.site_name}`;
-        const description = account.plataforma === 'Shopify' 
-          ? `Loja Shopify com ${formatNumberWithK(account.clientes || 0)} clientes no nicho ${account.nicho}. Preço: ${formatCurrency(account.preco)}`
-          : `Conta ${account.plataforma} com ${formatNumberWithK(account.seguidores)} seguidores no nicho ${account.nicho}. Preço: ${formatCurrency(account.preco)}`;
-        
+        const description = account.plataforma === 'Shopify' ? `Loja Shopify com ${formatNumberWithK(account.clientes || 0)} clientes no nicho ${account.nicho}. Preço: ${formatCurrency(account.preco)}` : `Conta ${account.plataforma} com ${formatNumberWithK(account.seguidores)} seguidores no nicho ${account.nicho}. Preço: ${formatCurrency(account.preco)}`;
+
         // Use account screenshot if available, otherwise use default
         let imageUrl = account.account_screenshot_url;
-        
+
         // If no screenshot, use default
         if (!imageUrl) {
           imageUrl = 'https://vgmvcdccjpnjqbychrmi.supabase.co/storage/v1/object/sign/images/PerfilMix.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTc2N2E1Mi01MThkLTQxYzEtYjZhOC0xZWMyN2EzMjZmNDgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvUGVyZmlsTWl4LnBuZyIsImlhdCI6MTc1MDczMzY0NywiZXhwIjoyMDY2MDkzNjQ3fQ.xUA6g87KMF1QEzT86gICa2nRjK-X8LiYbHn2k-8xDDI';
         }
-        
+
         // Add cache busting for better social media sharing
         const imageUrlWithCacheBust = imageUrl + (imageUrl.includes('?') ? '&' : '?') + 'v=' + Date.now();
-        
         const currentUrl = window.location.href;
 
         // Remove existing Open Graph and Twitter meta tags
@@ -107,7 +102,7 @@ const BuyAccount = () => {
         createMetaTag('og:type', 'website');
         createMetaTag('og:site_name', brandingSettings.site_name);
         createMetaTag('og:locale', 'pt_BR');
-        
+
         // Create new Twitter Card meta tags
         createMetaTag('twitter:card', 'summary_large_image', true);
         createMetaTag('twitter:title', title, true);
@@ -116,14 +111,13 @@ const BuyAccount = () => {
         createMetaTag('twitter:image:width', '1200', true);
         createMetaTag('twitter:image:height', '630', true);
         createMetaTag('twitter:site', '@perfilmix', true);
-        
+
         // Additional meta tags
         createMetaTag('description', description, true);
         createMetaTag('author', brandingSettings.site_name, true);
-        
+
         // Update page title
         document.title = title;
-        
         console.log('Meta tags updated with account info:', {
           title,
           description,
@@ -133,24 +127,21 @@ const BuyAccount = () => {
           hasScreenshot: !!account.account_screenshot_url
         });
       };
-      
+
       // Update immediately
       updateMetaTags();
-      
+
       // Also update after a small delay to ensure DOM is ready
       setTimeout(updateMetaTags, 500);
     }
-    
     return () => {
       // Reset to default when component unmounts
       const resetMetaTags = () => {
         const defaultImage = 'https://vgmvcdccjpnjqbychrmi.supabase.co/storage/v1/object/sign/images/PerfilMix.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTc2N2E1Mi01MThkLTQxYzEtYjZhOC0xZWMyN2EzMjZmNDgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvUGVyZmlsTWl4LnBuZyIsImlhdCI6MTc1MDczMzY0NywiZXhwIjoyMDY2MDkzNjQ3fQ.xUA6g87KMF1QEzT86gICa2nRjK-X8LiYbHn2k-8xDDI';
-        
         const updateMeta = (selector: string, content: string) => {
           const meta = document.querySelector(selector);
           if (meta) meta.setAttribute('content', content);
         };
-        
         updateMeta('meta[property="og:image"]', defaultImage);
         updateMeta('meta[name="twitter:image"]', defaultImage);
         updateMeta('meta[property="og:title"]', brandingSettings.site_name);
@@ -159,7 +150,6 @@ const BuyAccount = () => {
         updateMeta('meta[name="twitter:description"]', 'Marketplace de contas verificadas');
         document.title = `${brandingSettings.site_name} | Contas`;
       };
-      
       setTimeout(resetMetaTags, 100);
     };
   }, [account, brandingSettings.site_name]);
@@ -352,29 +342,8 @@ const BuyAccount = () => {
   // Copy account info function
   const handleCopyAccountInfo = async () => {
     if (!account) return;
-    
     const currentUrl = window.location.href;
-    const shareText = account.plataforma === 'Shopify' 
-      ? `🛒 *${account.nome}*\n\n` +
-        `💲 *Preço:* ${formatCurrency(account.preco)}\n` +
-        `👤 *Clientes:* ${formatNumberWithK(account.clientes || 0)}\n` +
-        `💼 *Nicho:* ${account.nicho === 'Outros' && account.nicho_customizado ? account.nicho_customizado : account.nicho}\n` +
-        `🌍 *País:* ${account.pais}\n` +
-        `📋 *Produtos:* ${account.produtos_cadastrados || 0}\n` +
-        `💳 *Vendas Mensais:* ${account.vendas_mensais || 'Não informado'}\n` +
-        `🏢 *Loja Pronta:* ${account.loja_pronta ? 'Sim' : 'Não'}\n` +
-        `🌐 *Domínio Incluso:* ${account.dominio_incluso ? 'Sim' : 'Não'}\n\n` +
-        `🔗 Ver loja: ${currentUrl}`
-      : `📱 *${account.nome}*\n\n` +
-        `💲 *Preço:* ${formatCurrency(account.preco)}\n` +
-        `👥 *Seguidores:* ${formatNumberWithK(account.seguidores)}\n` +
-        `💼 *Nicho:* ${account.nicho === 'Outros' && account.nicho_customizado ? account.nicho_customizado : account.nicho}\n` +
-        `🌍 *País:* ${account.pais}\n` +
-        `📈 *Engajamento:* ${account.engajamento}\n` +
-        `💰 *Monetizada:* ${account.monetizada || 'Não'}\n` +
-        (account.plataforma === 'TikTok' ? `🛒 *TikTok Shop:* ${account.tiktok_shop}\n` : '') +
-        `\n🔗 Ver conta: ${currentUrl}`;
-    
+    const shareText = account.plataforma === 'Shopify' ? `🛒 *${account.nome}*\n\n` + `💲 *Preço:* ${formatCurrency(account.preco)}\n` + `👤 *Clientes:* ${formatNumberWithK(account.clientes || 0)}\n` + `💼 *Nicho:* ${account.nicho === 'Outros' && account.nicho_customizado ? account.nicho_customizado : account.nicho}\n` + `🌍 *País:* ${account.pais}\n` + `📋 *Produtos:* ${account.produtos_cadastrados || 0}\n` + `💳 *Vendas Mensais:* ${account.vendas_mensais || 'Não informado'}\n` + `🏢 *Loja Pronta:* ${account.loja_pronta ? 'Sim' : 'Não'}\n` + `🌐 *Domínio Incluso:* ${account.dominio_incluso ? 'Sim' : 'Não'}\n\n` + `🔗 Ver loja: ${currentUrl}` : `📱 *${account.nome}*\n\n` + `💲 *Preço:* ${formatCurrency(account.preco)}\n` + `👥 *Seguidores:* ${formatNumberWithK(account.seguidores)}\n` + `💼 *Nicho:* ${account.nicho === 'Outros' && account.nicho_customizado ? account.nicho_customizado : account.nicho}\n` + `🌍 *País:* ${account.pais}\n` + `📈 *Engajamento:* ${account.engajamento}\n` + `💰 *Monetizada:* ${account.monetizada || 'Não'}\n` + (account.plataforma === 'TikTok' ? `🛒 *TikTok Shop:* ${account.tiktok_shop}\n` : '') + `\n🔗 Ver conta: ${currentUrl}`;
     try {
       await navigator.clipboard.writeText(shareText);
       toast({
@@ -731,21 +700,11 @@ const BuyAccount = () => {
               
               {/* Botões lado a lado */}
               <div className="flex gap-3 w-full">
-                <Button 
-                  variant="outline" 
-                  className="flex-1 border-tech-accent/50 text-tech-highlight hover:bg-tech-accent/20 hover:text-white hover:border-tech-highlight transition-all duration-300" 
-                  onClick={() => navigate("/")}
-                >
-                  Voltar ao Catálogo
-                </Button>
+                <Button variant="outline" className="flex-1 border-tech-accent/50 text-tech-highlight hover:bg-tech-accent/20 hover:text-white hover:border-tech-highlight transition-all duration-300" onClick={() => navigate("/")}>Voltar</Button>
                 
-                <Button 
-                  variant="outline" 
-                  className="flex-1 border-tech-accent/50 text-tech-highlight hover:bg-tech-accent/20 hover:text-white hover:border-tech-highlight transition-all duration-300" 
-                  onClick={handleCopyAccountInfo}
-                >
+                <Button variant="outline" className="flex-1 border-tech-accent/50 text-tech-highlight hover:bg-tech-accent/20 hover:text-white hover:border-tech-highlight transition-all duration-300" onClick={handleCopyAccountInfo}>
                   <Copy className="h-4 w-4 mr-2" />
-                  Compartilhar link
+                  Copiar
                 </Button>
               </div>
               
@@ -764,14 +723,7 @@ const BuyAccount = () => {
       </footer>
       
       {/* Image Viewer Modal */}
-      <ImageViewer 
-        imageUrl={account?.account_screenshot_url || null} 
-        isOpen={showImageViewer} 
-        onClose={() => setShowImageViewer(false)} 
-        title="Screenshot da Conta"
-        hideKeyboardShortcuts={true}
-        hideDownload={true}
-      />
+      <ImageViewer imageUrl={account?.account_screenshot_url || null} isOpen={showImageViewer} onClose={() => setShowImageViewer(false)} title="Screenshot da Conta" hideKeyboardShortcuts={true} hideDownload={true} />
 
     </div>;
 };
