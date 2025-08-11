@@ -79,9 +79,9 @@ const PaymentButton = ({
     }} onMouseLeave={e => {
       e.currentTarget.style.backgroundColor = 'hsl(var(--button-purchase))';
     }} size="lg" className="w-[280px] mx-auto h-12 font-semibold rounded-lg">
-        <div className="flex items-center justify-center gap-2">
+        <div className={`flex items-center justify-center ${isMobile ? '' : 'gap-2'}`}>
           {!isMobile && <ShoppingCart className="h-4 w-4" />}
-          <span className="font-semibold">Comprar {price.toLocaleString('pt-BR', {
+          <span className="font-semibold text-center">Comprar {price.toLocaleString('pt-BR', {
             style: 'currency',
             currency: 'BRL'
           })}</span>
@@ -103,9 +103,9 @@ const PaymentButton = ({
       {isLoading ? <div className="flex items-center justify-center gap-2">
           <Loader2 className="h-4 w-4 animate-spin" />
           <span className="font-semibold">Redirecionando...</span>
-        </div> : <div className="flex items-center justify-center gap-2">
+        </div> : <div className={`flex items-center justify-center ${isMobile ? '' : 'gap-2'}`}>
           {!isMobile && <ShoppingCart className="h-4 w-4" />}
-          <span className="font-semibold">Comprar {price.toLocaleString('pt-BR', {
+          <span className="font-semibold text-center">Comprar {price.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         })}</span>
