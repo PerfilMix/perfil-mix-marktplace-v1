@@ -97,7 +97,7 @@ const AccountCard = memo(({
                 backgroundColor: paisColor,
                 borderColor: paisColor,
                 color: paisColor === '#000000' ? '#FFFFFF' : '#FFFFFF'
-              }} className="border text-white font-medium py-1 mx-0 px-[3px]">
+              }} className="border text-white font-medium py-1 px-[23px] mx-0">
                   {account.pais}
                 </Badge>
               </div>
