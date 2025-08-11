@@ -78,8 +78,8 @@ const PaymentButton = ({
       e.currentTarget.style.backgroundColor = 'hsl(var(--button-purchase) / 0.9)';
     }} onMouseLeave={e => {
       e.currentTarget.style.backgroundColor = 'hsl(var(--button-purchase))';
-    }} size="lg" className="w-[280px] mx-auto h-12 font-semibold rounded-lg">
-        <div className={`flex items-center justify-center ${isMobile ? '' : 'gap-2'}`}>
+    }} size="lg" className="w-full max-w-[340px] sm:w-[280px] mx-auto h-12 font-semibold rounded-lg px-4 sm:px-8 whitespace-normal sm:whitespace-nowrap">
+        <div className={`w-full flex items-center justify-center text-center ${isMobile ? '' : 'gap-2'}`}>
           {!isMobile && <ShoppingCart className="h-4 w-4" />}
           <span className="font-semibold text-center">Comprar {price.toLocaleString('pt-BR', {
             style: 'currency',
@@ -88,7 +88,7 @@ const PaymentButton = ({
         </div>
       </Button>;
   }
-  return <Button onClick={handlePayment} disabled={disabled || isLoading} className="w-[280px] mx-auto h-12 font-semibold disabled:opacity-50 rounded-lg" style={{
+  return <Button onClick={handlePayment} disabled={disabled || isLoading} className="w-full max-w-[340px] sm:w-[280px] mx-auto h-12 font-semibold disabled:opacity-50 rounded-lg px-4 sm:px-8 whitespace-normal sm:whitespace-nowrap" style={{
     backgroundColor: 'hsl(var(--button-purchase))',
     color: 'hsl(var(--button-success-text))'
   }} onMouseEnter={e => {
@@ -103,7 +103,7 @@ const PaymentButton = ({
       {isLoading ? <div className="flex items-center justify-center gap-2">
           <Loader2 className="h-4 w-4 animate-spin" />
           <span className="font-semibold">Redirecionando...</span>
-        </div> : <div className={`flex items-center justify-center ${isMobile ? '' : 'gap-2'}`}>
+        </div> : <div className={`w-full flex items-center justify-center text-center ${isMobile ? '' : 'gap-2'}`}>
           {!isMobile && <ShoppingCart className="h-4 w-4" />}
           <span className="font-semibold text-center">Comprar {price.toLocaleString('pt-BR', {
           style: 'currency',
