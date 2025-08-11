@@ -91,15 +91,10 @@ const AccountCard = memo(({
           <div className="flex-1 space-y-3 lg:space-y-6">
             {/* Informações de Preço */}
             <div className="space-y-2 lg:space-y-3">
-              <div className="flex justify-between items-center py-2 bg-tech-darker/50 rounded-lg border border-tech-accent/10 px-3 lg:px-6 mx-[5px] gap-4">
-                <span className="text-gray-300 font-medium">País:</span>
-                <Badge className="border text-white font-medium px-3 py-1" style={{
-                backgroundColor: paisColor,
-                borderColor: paisColor,
-                color: paisColor === '#000000' ? '#FFFFFF' : '#FFFFFF'
-              }}>
-                  {account.pais}
-                </Badge>
+              <div className="flex items-center py-2 bg-tech-darker/50 rounded-lg border border-tech-accent/10 px-3 lg:px-6 mx-[5px]">
+                <span className="text-gray-300 font-medium whitespace-nowrap">
+                  País: <span className="text-white font-medium">{account.pais}</span>
+                </span>
               </div>
             </div>
 
