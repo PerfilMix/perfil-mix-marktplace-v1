@@ -93,11 +93,11 @@ const AccountCard = memo(({
             <div className="space-y-2 lg:space-y-3">
               <div className="flex justify-between items-center py-2 bg-tech-darker/50 rounded-lg border border-tech-accent/10 px-3 lg:px-6 mx-[5px] gap-4">
                 <span className="text-gray-300 font-medium">País:</span>
-                <Badge className="border text-white font-medium px-3 py-1" style={{
+                <Badge style={{
                 backgroundColor: paisColor,
                 borderColor: paisColor,
                 color: paisColor === '#000000' ? '#FFFFFF' : '#FFFFFF'
-              }}>
+              }} className="border text-white font-medium py-1 px-[23px] mx-0">
                   {account.pais}
                 </Badge>
               </div>
@@ -266,10 +266,7 @@ const AccountCard = memo(({
           </Button> : <>
             <PaymentButton accountId={account.id} accountName={account.nome} price={account.preco} currency="BRL" isAccountSold={account.status === 'vendido'} />
             
-            <button 
-              onClick={() => navigate(`/comprar/${account.id}`)} 
-              className="text-blue-500 hover:text-blue-400 font-medium text-base transition-colors duration-200 underline underline-offset-2"
-            >
+            <button onClick={() => navigate(`/comprar/${account.id}`)} className="text-blue-500 hover:text-blue-400 font-medium text-base transition-colors duration-200 underline underline-offset-2">
               {isShopify ? "Detalhes da Loja" : "Detalhes da Conta"}
             </button>
           </>}
