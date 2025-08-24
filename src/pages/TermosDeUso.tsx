@@ -19,7 +19,7 @@ const TermosDeUso = () => {
                 1. Introdução
               </h2>
               <p className="text-gray-300 leading-relaxed">
-                Este documento regula o uso do sistema PerfilMix, fornecendo acesso às contas de mídias sociais para venda ou troca de perfis, com filtros como nicho, plataforma e engajamento.
+                Este documento regula o uso do sistema Compra de Conta, fornecendo acesso às contas de mídias sociais para venda ou troca de perfis, com filtros como nicho, plataforma e engajamento.
               </p>
             </section>
 
@@ -28,7 +28,7 @@ const TermosDeUso = () => {
                 2. Aceitação dos Termos
               </h2>
               <p className="text-gray-300 leading-relaxed">
-                Ao acessar e utilizar o site PerfilMix, você concorda com os termos descritos. Caso não concorde, não utilize o sistema.
+                Ao acessar e utilizar o site Compra de Conta, você concorda com os termos descritos. Caso não concorde, não utilize o sistema.
               </p>
             </section>
 
@@ -51,7 +51,7 @@ const TermosDeUso = () => {
                 4. Limitações de Responsabilidade
               </h2>
               <p className="text-gray-300 leading-relaxed">
-                A PerfilMix não se responsabiliza por possíveis danos diretos ou indiretos decorrentes do uso das contas adquiridas, incluindo problemas com plataformas de terceiros.
+                O Compra de Conta não se responsabiliza por possíveis danos diretos ou indiretos decorrentes do uso das contas adquiridas, incluindo problemas com plataformas de terceiros.
               </p>
             </section>
 
@@ -60,7 +60,7 @@ const TermosDeUso = () => {
                 5. Alterações nos Termos
               </h2>
               <p className="text-gray-300 leading-relaxed">
-                A PerfilMix pode alterar esses termos a qualquer momento. É responsabilidade do usuário revisar os termos periodicamente.
+                O Compra de conta pode alterar esses termos a qualquer momento. É responsabilidade do usuário revisar os termos periodicamente.
               </p>
             </section>
           </div>
