@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import Footer from "@/components/Footer";
 
 const Landing = () => {
-  const [brandingSettings, setBrandingSettings] = useState({ site_name: "PerfilMix" });
+  const [brandingSettings, setBrandingSettings] = useState({ site_name: "Compra de Conta" });
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ const Landing = () => {
         if (error) throw error;
         
         if (brandingData && brandingData.length > 0) {
-          setBrandingSettings({ site_name: brandingData[0].value || "PerfilMix" });
+          setBrandingSettings({ site_name: brandingData[0].value || "Compra de Conta" });
         }
       } catch (error) {
         console.error("Error fetching branding settings:", error);
