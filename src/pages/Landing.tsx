@@ -60,7 +60,7 @@ const Landing = () => {
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <img 
-              src="https://vgmvcdccjpnjqbychrmi.supabase.co/storage/v1/object/sign/images/PerfilMix.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTc2N2E1Mi01MThkLTQxYzEtYjZhOC0xZWMyN2EzMjZmNDgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvUGVyZmlsTWl4LnBuZyIsImlhdCI6MTc1MDczMzY0NywiZXhwIjoyMDY2MDkzNjQ3fQ.xUA6g87KMF1QEzT86gICa2nRjK-X8LiYbHn2k-8xDDI" 
+              src="https://vgmvcdccjpnjqbychrmi.supabase.co/storage/v1/object/public/logos/WhatsApp%20Image%202025-08-18%20at%2017.04.13%20(1).jpeg" 
               alt="Logo" 
               className="h-12 w-12 mr-2"
             />
