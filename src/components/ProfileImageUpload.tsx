@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +24,6 @@ const ProfileImageUpload = ({ currentImageUrl, onImageUpload, accountName, title
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Validar tipo de arquivo
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
     if (!allowedTypes.includes(file.type)) {
       toast({
@@ -36,7 +34,6 @@ const ProfileImageUpload = ({ currentImageUrl, onImageUpload, accountName, title
       return;
     }
 
-    // Validar tamanho do arquivo (2MB)
     if (file.size > 2 * 1024 * 1024) {
       toast({
         variant: "destructive",
@@ -47,17 +44,20 @@ const ProfileImageUpload = ({ currentImageUrl, onImageUpload, accountName, title
     }
 
     setUploading(true);
+
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${uuidv4()}.${fileExt}`;
-      const filePath = fileName;
+      const filePath = fileName; // se quiser subpasta: `uploads/${fileName}`
 
+      // Upload do arquivo
       const { error: uploadError } = await supabase.storage
         .from('account-profiles')
-        .upload(filePath, file);
+        .upload(filePath, file, { cacheControl: '3600', upsert: true });
 
       if (uploadError) throw uploadError;
 
+      // Pega URL pública
       const { data } = supabase.storage
         .from('account-profiles')
         .getPublicUrl(filePath);
