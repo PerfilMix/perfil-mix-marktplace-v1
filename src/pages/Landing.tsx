@@ -60,7 +60,8 @@ const Landing = () => {
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <img 
-              src="https://vgmvcdccjpnjqbychrmi.supabase.co/storage/v1/object/public/logos/logocc.jpeg" 
+              src="src="https://vgmvcdccjpnjqbychrmi.supabase.co/storage/v1/object/public/images/PerfilMix.png"
+" 
               alt="Logo" 
               className="h-12 w-12 mr-2"
             />
