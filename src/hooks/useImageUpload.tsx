@@ -1,88 +1,75 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useImageUpload } from "../hooks/useImageUpload";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
-import { v4 as uuidv4 } from "uuid";
 
-export const useImageUpload = () => {
-  const [uploading, setUploading] = useState(false);
-  const { toast } = useToast();
+interface ProfileImageProps {
+  userId: string; // ID do usuário atual
+}
 
-  const uploadImage = async (file: File, bucket: string = 'account-profiles'): Promise<string | null> => {
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-    if (!allowedTypes.includes(file.type)) {
-      toast({
-        variant: "destructive",
-        title: "Tipo de arquivo inválido",
-        description: "Selecione uma imagem JPG, PNG ou WebP.",
-      });
-      return null;
-    }
+export default function ProfileImage({ userId }: ProfileImageProps) {
+  const { uploadImage, uploading } = useImageUpload();
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-    if (file.size > 2 * 1024 * 1024) {
-      toast({
-        variant: "destructive",
-        title: "Arquivo muito grande",
-        description: "Máximo de 2MB.",
-      });
-      return null;
-    }
+  // Carrega a imagem do banco ao abrir o componente
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("avatar_url")
+        .eq("id", userId)
+        .single();
 
-    setUploading(true);
-    try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${uuidv4()}.${fileExt}`;
-      const filePath = fileName;
+      if (!error && data?.avatar_url) {
+        setImageUrl(data.avatar_url);
+      }
+    };
 
-      const { error: uploadError } = await supabase.storage
-        .from(bucket)
-        .upload(filePath, file);
+    fetchProfileImage();
+  }, [userId]);
 
-      if (uploadError) throw uploadError;
+  // Função para upload e salvar no banco
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-      const { data } = supabase.storage
-        .from(bucket)
-        .getPublicUrl(filePath);
+    const url = await uploadImage(file);
+    if (url) {
+      setImageUrl(url);
 
-      toast({
-        title: "Imagem carregada",
-        description: "Upload realizado com sucesso.",
-      });
+      // Atualiza a URL no banco
+      const { error } = await supabase
+        .from("profiles")
+        .update({ avatar_url: url })
+        .eq("id", userId);
 
-      return data.publicUrl;
-    } catch (error) {
-      console.error('Erro ao fazer upload:', error);
-      toast({
-        variant: "destructive",
-        title: "Erro no upload",
-        description: "Não foi possível carregar a imagem.",
-      });
-      return null;
-    } finally {
-      setUploading(false);
+      if (error) {
+        console.error("Erro ao salvar avatar no banco:", error);
+      }
     }
   };
 
-  const deleteImage = async (imageUrl: string, bucket: string = 'account-profiles'): Promise<boolean> => {
-    try {
-      const fileName = imageUrl.split('/').pop();
-      if (!fileName) return false;
+  return (
+    <div className="flex flex-col items-center space-y-4">
+      {imageUrl ? (
+        <img
+          src={imageUrl}
+          alt="Foto de perfil"
+          className="h-32 w-32 rounded-full object-cover border"
+        />
+      ) : (
+        <div className="h-32 w-32 flex items-center justify-center rounded-full border text-gray-500">
+          Sem imagem
+        </div>
+      )}
 
-      const { error } = await supabase.storage
-        .from(bucket)
-        .remove([fileName]);
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        disabled={uploading}
+      />
 
-      if (error) throw error;
-
-      return true;
-    } catch (error) {
-      console.error('Erro ao deletar imagem:', error);
-      return false;
-    }
-  };
-
-  return {
-    uploadImage,
-    deleteImage,
-    uploading
-  };
-};
+      {uploading && <p>Carregando...</p>}
+    </div>
+  );
+}
