@@ -1,3 +1,5 @@
+
+
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -8,21 +10,23 @@ export const useImageUpload = () => {
   const { toast } = useToast();
 
   const uploadImage = async (file: File, bucket: string = 'account-profiles'): Promise<string | null> => {
+    // Validar tipo de arquivo
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
     if (!allowedTypes.includes(file.type)) {
       toast({
         variant: "destructive",
         title: "Tipo de arquivo inválido",
-        description: "Selecione uma imagem JPG, PNG ou WebP.",
+        description: "Por favor, selecione uma imagem JPG, PNG ou WebP.",
       });
       return null;
     }
 
+    // Validar tamanho do arquivo (2MB)
     if (file.size > 2 * 1024 * 1024) {
       toast({
         variant: "destructive",
         title: "Arquivo muito grande",
-        description: "Máximo de 2MB.",
+        description: "A imagem deve ter no máximo 2MB.",
       });
       return null;
     }
@@ -45,7 +49,7 @@ export const useImageUpload = () => {
 
       toast({
         title: "Imagem carregada",
-        description: "Upload realizado com sucesso.",
+        description: "A imagem foi carregada com sucesso.",
       });
 
       return data.publicUrl;
@@ -54,7 +58,7 @@ export const useImageUpload = () => {
       toast({
         variant: "destructive",
         title: "Erro no upload",
-        description: "Não foi possível carregar a imagem.",
+        description: "Não foi possível carregar a imagem. Tente novamente.",
       });
       return null;
     } finally {
@@ -64,6 +68,7 @@ export const useImageUpload = () => {
 
   const deleteImage = async (imageUrl: string, bucket: string = 'account-profiles'): Promise<boolean> => {
     try {
+      // Extrair o nome do arquivo da URL
       const fileName = imageUrl.split('/').pop();
       if (!fileName) return false;
 
