@@ -11,18 +11,18 @@ export const useImageUpload = () => {
     file: File,
     bucket: string = "account-profiles"
   ): Promise<string | null> => {
-    // Validar tipo de arquivo
+    // Validação do tipo do arquivo
     const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
       toast({
         variant: "destructive",
         title: "Tipo de arquivo inválido",
-        description: "Por favor, selecione uma imagem JPG, PNG ou WebP.",
+        description: "Selecione uma imagem JPG, PNG ou WebP.",
       });
       return null;
     }
 
-    // Validar tamanho do arquivo (2MB)
+    // Validação do tamanho (máx. 2MB)
     if (file.size > 2 * 1024 * 1024) {
       toast({
         variant: "destructive",
@@ -39,13 +39,16 @@ export const useImageUpload = () => {
       const fileName = `${uuidv4()}.${fileExt}`;
       const filePath = fileName;
 
+      // Upload da imagem
       const { error: uploadError } = await supabase.storage
         .from(bucket)
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
-      const { data } = supabase.storage.from(bucket).getPublicUrl(filePath);
+      // Obter URL pública corretamente
+      const { data, error: urlError } = supabase.storage.from(bucket).getPublicUrl(filePath);
+      if (urlError) throw urlError;
 
       toast({
         title: "Imagem carregada",
@@ -71,7 +74,8 @@ export const useImageUpload = () => {
     bucket: string = "account-profiles"
   ): Promise<boolean> => {
     try {
-      const fileName = imageUrl.split("/").pop();
+      // Extrai o nome do arquivo, ignorando query strings
+      const fileName = imageUrl.split("/").pop()?.split("?")[0];
       if (!fileName) return false;
 
       const { error } = await supabase.storage.from(bucket).remove([fileName]);
