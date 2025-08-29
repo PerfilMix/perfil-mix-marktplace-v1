@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -9,9 +7,12 @@ export const useImageUpload = () => {
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
 
-  const uploadImage = async (file: File, bucket: string = 'account-profiles'): Promise<string | null> => {
+  const uploadImage = async (
+    file: File,
+    bucket: string = "account-profiles"
+  ): Promise<string | null> => {
     // Validar tipo de arquivo
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
       toast({
         variant: "destructive",
@@ -32,8 +33,9 @@ export const useImageUpload = () => {
     }
 
     setUploading(true);
+
     try {
-      const fileExt = file.name.split('.').pop();
+      const fileExt = file.name.split(".").pop();
       const fileName = `${uuidv4()}.${fileExt}`;
       const filePath = fileName;
 
@@ -43,9 +45,7 @@ export const useImageUpload = () => {
 
       if (uploadError) throw uploadError;
 
-      const { data } = supabase.storage
-        .from(bucket)
-        .getPublicUrl(filePath);
+      const { data } = supabase.storage.from(bucket).getPublicUrl(filePath);
 
       toast({
         title: "Imagem carregada",
@@ -54,7 +54,7 @@ export const useImageUpload = () => {
 
       return data.publicUrl;
     } catch (error) {
-      console.error('Erro ao fazer upload:', error);
+      console.error("Erro ao fazer upload:", error);
       toast({
         variant: "destructive",
         title: "Erro no upload",
@@ -66,28 +66,33 @@ export const useImageUpload = () => {
     }
   };
 
-  const deleteImage = async (imageUrl: string, bucket: string = 'account-profiles'): Promise<boolean> => {
+  const deleteImage = async (
+    imageUrl: string,
+    bucket: string = "account-profiles"
+  ): Promise<boolean> => {
     try {
-      // Extrair o nome do arquivo da URL
-      const fileName = imageUrl.split('/').pop();
+      const fileName = imageUrl.split("/").pop();
       if (!fileName) return false;
 
-      const { error } = await supabase.storage
-        .from(bucket)
-        .remove([fileName]);
-
+      const { error } = await supabase.storage.from(bucket).remove([fileName]);
       if (error) throw error;
+
+      toast({
+        title: "Imagem deletada",
+        description: "A imagem foi removida com sucesso.",
+      });
 
       return true;
     } catch (error) {
-      console.error('Erro ao deletar imagem:', error);
+      console.error("Erro ao deletar imagem:", error);
+      toast({
+        variant: "destructive",
+        title: "Erro ao deletar",
+        description: "Não foi possível remover a imagem.",
+      });
       return false;
     }
   };
 
-  return {
-    uploadImage,
-    deleteImage,
-    uploading
-  };
+  return { uploadImage, deleteImage, uploading };
 };
