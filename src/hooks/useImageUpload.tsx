@@ -1,23 +1,20 @@
 import { useState } from "react";
-import { useImageUpload } from "@/hooks/useImageUpload"; // importa o seu hook
+import { useImageUpload } from "../hooks/useImageUpload"; // caminho relativo
 
 export default function ProfileImage() {
   const { uploadImage, uploading } = useImageUpload();
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState(null);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const url = await uploadImage(file); // chama o hook
-    if (url) {
-      setImageUrl(url); // guarda a URL pública no estado
-    }
+    const url = await uploadImage(file);
+    if (url) setImageUrl(url);
   };
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      {/* Se já tem imagem, mostra */}
       {imageUrl ? (
         <img
           src={imageUrl}
@@ -29,15 +26,12 @@ export default function ProfileImage() {
           Sem imagem
         </div>
       )}
-
-      {/* Input para enviar imagem */}
       <input
         type="file"
         accept="image/*"
         onChange={handleFileChange}
         disabled={uploading}
       />
-
       {uploading && <p>Carregando...</p>}
     </div>
   );
