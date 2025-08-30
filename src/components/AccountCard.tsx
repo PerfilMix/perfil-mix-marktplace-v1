@@ -5,17 +5,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Copy, Users, Brain, DollarSign, Store, Package, TrendingUp, ExternalLink, Eye } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useState, memo } from "react";
 import PaymentButton from "@/components/PaymentButton";
 import ImageViewer from "@/components/ImageViewer";
+
 interface AccountCardProps {
   account: TikTokAccount;
   showCredentials?: boolean;
   isDesktop?: boolean;
   showEngagement?: boolean;
 }
+
 const AccountCard = memo(({
   account,
   showCredentials = false,
@@ -23,11 +25,10 @@ const AccountCard = memo(({
   showEngagement = true
 }: AccountCardProps) => {
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [showScreenshot, setShowScreenshot] = useState(false);
   const [showImageViewer, setShowImageViewer] = useState(false);
+
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     toast({
@@ -35,10 +36,9 @@ const AccountCard = memo(({
       duration: 2000
     });
   };
+
   const getPlatformUrl = (platform: string) => {
-    const urls: {
-      [key: string]: string;
-    } = {
+    const urls: { [key: string]: string } = {
       "TikTok": "https://www.tiktok.com/",
       "YouTube": "https://www.youtube.com/",
       "Instagram": "https://www.instagram.com/",
@@ -48,43 +48,56 @@ const AccountCard = memo(({
     };
     return urls[platform] || "https://www.tiktok.com/";
   };
+
   const handleOpenPlatform = () => {
     const url = getPlatformUrl(account.plataforma);
     window.open(url, "_blank");
   };
+
   const platformStyle = getPlatformStyle(account.plataforma);
   const paisColor = getPaisColor(account.pais);
   const isShopify = account.plataforma === "Shopify";
-  return <Card className="glass-card overflow-hidden hover:shadow-xl hover:shadow-tech-highlight/5 transition-all duration-300 border-tech-accent/20 bg-tech-card/95 backdrop-blur-sm">
+
+  return (
+    <Card className="glass-card overflow-hidden hover:shadow-xl hover:shadow-tech-highlight/5 transition-all duration-300 border-tech-accent/20 bg-tech-card/95 backdrop-blur-sm">
       <CardHeader className="bg-gradient-to-r from-tech-accent/10 to-tech-highlight/10 pb-4 border-b border-tech-accent/20 px-[3px] mx-0">
         <div className="flex justify-between items-start">
           <div className="flex-1">
             <h3 className="text-base sm:text-lg lg:text-xl font-bold text-white px-0 leading-tight">{account.nome}</h3>
           </div>
-          
         </div>
       </CardHeader>
       
       <CardContent className="pt-4 lg:pt-6 bg-tech-card mx-0 lg:px-6 px-[4px]">
         {/* Screenshot da Conta - Topo no Mobile */}
-        {account.account_screenshot_url && !showCredentials && <div className="lg:hidden mb-4">
+        {account.account_screenshot_url && !showCredentials && (
+          <div className="lg:hidden mb-4">
             <div className="relative group">
-              <img src={account.account_screenshot_url} alt={`Screenshot da conta ${account.nome}`} className="w-full h-48 object-cover object-top cursor-pointer hover:opacity-90 transition-all duration-300 rounded-lg" onClick={e => {
-            e.preventDefault();
-            e.stopPropagation();
-            setShowImageViewer(true);
-          }} />
-              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg cursor-pointer" onClick={e => {
-            e.preventDefault();
-            e.stopPropagation();
-            setShowImageViewer(true);
-          }}>
+              <img 
+                src={account.account_screenshot_url} 
+                alt={`Screenshot da conta ${account.nome}`}
+                className="w-full h-48 object-cover object-top cursor-pointer hover:opacity-90 transition-all duration-300 rounded-lg"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowImageViewer(true);
+                }}
+              />
+              <div 
+                className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowImageViewer(true);
+                }}
+              >
                 <div className="bg-black/70 text-white px-3 py-1 rounded-md text-sm font-medium pointer-events-none">
                   Clique para ampliar
                 </div>
               </div>
             </div>
-          </div>}
+          </div>
+        )}
 
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-2">
           {/* Informações da Conta */}
@@ -93,11 +106,14 @@ const AccountCard = memo(({
             <div className="space-y-2 lg:space-y-3">
               <div className="flex justify-between items-center py-2 bg-tech-darker/50 rounded-lg border border-tech-accent/10 lg:px-6 gap-4 px-[2px] mx-px">
                 <span className="text-gray-300 font-medium">País:</span>
-                <Badge style={{
-                backgroundColor: paisColor,
-                borderColor: paisColor,
-                color: paisColor === '#000000' ? '#FFFFFF' : '#FFFFFF'
-              }} className="border text-white font-medium py-1 px-[2px]">
+                <Badge 
+                  style={{
+                    backgroundColor: paisColor,
+                    borderColor: paisColor,
+                    color: paisColor === '#000000' ? '#FFFFFF' : '#FFFFFF'
+                  }} 
+                  className="border text-white font-medium py-1 px-[2px]"
+                >
                   {account.pais}
                 </Badge>
               </div>
@@ -107,29 +123,39 @@ const AccountCard = memo(({
             <div className="space-y-2 lg:space-y-3">
               <div className="flex justify-between items-center py-2 px-3 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10">
                 <span className="text-gray-300 font-medium">Local:</span>
-                <Badge variant="outline" className="border font-medium px-3 py-1" style={{
-                borderColor: platformStyle.color,
-                color: platformStyle.color,
-                backgroundColor: `${platformStyle.color}20`
-              }}>
+                <Badge 
+                  variant="outline" 
+                  className="border font-medium px-3 py-1" 
+                  style={{
+                    borderColor: platformStyle.color,
+                    color: platformStyle.color,
+                    backgroundColor: `${platformStyle.color}20`
+                  }}
+                >
                   {account.plataforma}
                 </Badge>
               </div>
 
-              {account.plataforma === "TikTok" && <div className="flex justify-between items-center py-2 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10 px-[16px]">
+              {account.plataforma === "TikTok" && (
+                <div className="flex justify-between items-center py-2 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10 px-[16px]">
                   <span className="text-gray-300 font-medium">Monetizada:</span>
                   <span className="text-white font-medium">{account.monetizada || "Não"}</span>
-                </div>}
+                </div>
+              )}
 
-              {account.plataforma === "TikTok" && <div className="flex justify-between items-center py-2 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10 px-[14px]">
+              {account.plataforma === "TikTok" && (
+                <div className="flex justify-between items-center py-2 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10 px-[14px]">
                   <span className="text-gray-300 font-medium">TikTok Shop:</span>
                   <span className="text-white font-medium">{account.tiktok_shop || "Não"}</span>
-                </div>}
+                </div>
+              )}
 
-              {isShopify && <div className="flex justify-between items-center py-2 px-3 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10">
+              {isShopify && (
+                <div className="flex justify-between items-center py-2 px-3 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10">
                   <span className="text-gray-300 font-medium">TikTok Shop:</span>
                   <span className="text-white font-medium">Não</span>
-                </div>}
+                </div>
+              )}
 
               <div className="flex justify-between items-center py-2 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10 px-[19px]">
                 <span className="text-gray-300 font-medium">
@@ -140,68 +166,91 @@ const AccountCard = memo(({
                 </span>
               </div>
 
-              {!isShopify && showEngagement && <div className="flex justify-between items-center py-2 px-3 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10">
+              {!isShopify && showEngagement && (
+                <div className="flex justify-between items-center py-2 px-3 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10">
                   <span className="text-gray-300 font-medium">Engajamento:</span>
-                  <Badge className={`px-3 py-1 font-medium ${account.engajamento === 'Alto' ? 'bg-emerald-600' : account.engajamento === 'Médio' ? 'bg-blue-600' : 'bg-red-600'}`}>
+                  <Badge className={`px-3 py-1 font-medium ${
+                    account.engajamento === 'Alto' ? 'bg-emerald-600' : 
+                    account.engajamento === 'Médio' ? 'bg-blue-600' : 'bg-red-600'
+                  }`}>
                     {account.engajamento || "Médio"}
                   </Badge>
-                </div>}
+                </div>
+              )}
 
               <div className="flex justify-between items-center py-2 px-3 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10">
                 <span className="text-gray-300 font-medium">Nicho:</span>
-                <Badge className="bg-blue-600 text-white border-blue-600 px-3 py-1 font-medium" style={{
-                backgroundColor: '#2563eb'
-              }}>
+                <Badge 
+                  className="bg-blue-600 text-white border-blue-600 px-3 py-1 font-medium" 
+                  style={{ backgroundColor: '#2563eb' }}
+                >
                   {account.nicho}
                 </Badge>
               </div>
 
-              {isShopify && account.produtos_cadastrados && <div className="flex justify-between items-center py-2 px-3 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10">
+              {isShopify && account.produtos_cadastrados && (
+                <div className="flex justify-between items-center py-2 px-3 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10">
                   <span className="text-gray-300 font-medium">Produtos:</span>
                   <span className="font-bold text-white text-lg">
                     {account.produtos_cadastrados}
                   </span>
-                </div>}
+                </div>
+              )}
 
-              {isShopify && account.vendas_mensais && <div className="flex justify-between items-center py-2 px-3 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10">
+              {isShopify && account.vendas_mensais && (
+                <div className="flex justify-between items-center py-2 px-3 lg:px-6 bg-tech-darker/50 rounded-lg border border-tech-accent/10">
                   <span className="text-gray-300 font-medium">Vendas Mensais:</span>
                   <span className="font-bold text-white text-sm">
                     {account.vendas_mensais}
                   </span>
-                </div>}
+                </div>
+              )}
             </div>
           </div>
 
           {/* Screenshot da Conta - Lado Direito no Desktop */}
-          {account.account_screenshot_url && !showCredentials && <div className="hidden lg:block w-full lg:w-80 flex-shrink-0 space-y-3 pr-3">
+          {account.account_screenshot_url && !showCredentials && (
+            <div className="hidden lg:block w-full lg:w-80 flex-shrink-0 space-y-3 pr-3">
               <div className="relative group">
-                <img src={account.account_screenshot_url} alt={`Screenshot da conta ${account.nome}`} className="w-full h-80 object-cover object-top cursor-pointer hover:opacity-90 transition-all duration-300 rounded-lg" onClick={e => {
-              e.preventDefault();
-              e.stopPropagation();
-              setShowImageViewer(true);
-            }} />
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg cursor-pointer" onClick={e => {
-              e.preventDefault();
-              e.stopPropagation();
-              setShowImageViewer(true);
-            }}>
+                <img 
+                  src={account.account_screenshot_url} 
+                  alt={`Screenshot da conta ${account.nome}`}
+                  className="w-full h-80 object-cover object-top cursor-pointer hover:opacity-90 transition-all duration-300 rounded-lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setShowImageViewer(true);
+                  }}
+                />
+                <div 
+                  className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setShowImageViewer(true);
+                  }}
+                >
                   <div className="bg-black/70 text-white px-3 py-1 rounded-md text-sm font-medium pointer-events-none">
                     Clique para ampliar
                   </div>
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
         </div>
 
-        {isShopify && (account.dominio_incluso || account.loja_pronta) && <div className="mt-4 border border-tech-accent/30 rounded-lg p-4 bg-tech-darker/50 backdrop-blur-sm">
+        {isShopify && (account.dominio_incluso || account.loja_pronta) && (
+          <div className="mt-4 border border-tech-accent/30 rounded-lg p-4 bg-tech-darker/50 backdrop-blur-sm">
             <h4 className="font-semibold mb-3 text-center text-tech-highlight">Características</h4>
             <div className="flex flex-wrap gap-2 justify-center">
               {account.dominio_incluso && <Badge className="bg-green-600 text-white">Domínio Incluso</Badge>}
               {account.loja_pronta && <Badge className="bg-blue-600 text-white">Loja Pronta</Badge>}
             </div>
-          </div>}
+          </div>
+        )}
         
-        {showCredentials && <div className="mt-4 border border-tech-accent/30 rounded-lg p-4 bg-tech-darker/50 backdrop-blur-sm">
+        {showCredentials && (
+          <div className="mt-4 border border-tech-accent/30 rounded-lg p-4 bg-tech-darker/50 backdrop-blur-sm">
             <h4 className="font-semibold mb-3 text-center text-tech-highlight">
               Credenciais de acesso
             </h4>
@@ -216,7 +265,12 @@ const AccountCard = memo(({
                   </div>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" onClick={() => copyToClipboard(account.login, "Login")} className="h-8 w-8 sm:h-6 sm:w-6 p-0 hover:bg-tech-accent/20 text-tech-accent flex-shrink-0">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => copyToClipboard(account.login, "Login")} 
+                        className="h-8 w-8 sm:h-6 sm:w-6 p-0 hover:bg-tech-accent/20 text-tech-accent flex-shrink-0"
+                      >
                         <Copy className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
                       </Button>
                     </TooltipTrigger>
@@ -237,7 +291,12 @@ const AccountCard = memo(({
                   </div>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" onClick={() => copyToClipboard(account.senha, "Senha")} className="h-8 w-8 sm:h-6 sm:w-6 p-0 hover:bg-tech-accent/20 text-tech-accent flex-shrink-0">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => copyToClipboard(account.senha, "Senha")} 
+                        className="h-8 w-8 sm:h-6 sm:w-6 p-0 hover:bg-tech-accent/20 text-tech-accent flex-shrink-0"
+                      >
                         <Copy className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
                       </Button>
                     </TooltipTrigger>
@@ -251,30 +310,61 @@ const AccountCard = memo(({
 
             {/* Platform redirect button */}
             <div className="mt-4 flex justify-center">
-              <Button onClick={handleOpenPlatform} className="tech-gradient hover:shadow-lg hover:shadow-tech-highlight/20 text-white font-medium px-6 py-2 transition-all duration-300">
+              <Button 
+                onClick={handleOpenPlatform} 
+                className="tech-gradient hover:shadow-lg hover:shadow-tech-highlight/20 text-white font-medium px-6 py-2 transition-all duration-300"
+              >
                 <ExternalLink className="h-4 w-4 mr-2" />
                 Abrir {account.plataforma}
               </Button>
             </div>
-          </div>}
+          </div>
+        )}
       </CardContent>
       
       <CardFooter className="bg-tech-darker/30 flex flex-col justify-center pt-6 pb-6 border-t border-tech-accent/20 gap-3 mx-0 px-4 lg:px-[50px]">
-        {showCredentials ? <Button className="w-full h-12 tech-gradient hover:shadow-lg hover:shadow-tech-highlight/20 text-white font-bold text-base transition-all duration-300 rounded-lg" onClick={handleOpenPlatform}>
+        {showCredentials ? (
+          <Button 
+            className="w-full h-12 tech-gradient hover:shadow-lg hover:shadow-tech-highlight/20 text-white font-bold text-base transition-all duration-300 rounded-lg" 
+            onClick={handleOpenPlatform}
+          >
             <ExternalLink className="h-4 w-4 mr-2" />
             Abrir {account.plataforma}
-          </Button> : <>
-            <PaymentButton accountId={account.id} accountName={account.nome} price={account.preco} currency="BRL" isAccountSold={account.status === 'vendido'} />
+          </Button>
+        ) : (
+          <>
+            <PaymentButton 
+              accountId={account.id} 
+              accountName={account.nome} 
+              price={account.preco} 
+              currency="BRL" 
+              isAccountSold={account.status === 'vendido'} 
+            />
             
-            <button onClick={() => navigate(`/comprar/${account.id}`)} className="text-blue-500 hover:text-blue-400 font-medium text-base transition-colors duration-200 underline underline-offset-2">
+            <button 
+              onClick={() => navigate(`/comprar/${account.id}`)} 
+              className="text-blue-500 hover:text-blue-400 font-medium text-base transition-colors duration-200 underline underline-offset-2"
+            >
               {isShopify ? "Detalhes da Loja" : "Detalhes da Conta"}
             </button>
-          </>}
+          </>
+        )}
       </CardFooter>
 
       {/* Image Viewer Modal */}
-      {showImageViewer && <ImageViewer imageUrl={account.account_screenshot_url} isOpen={showImageViewer} onClose={() => setShowImageViewer(false)} title={`Screenshot da conta ${account.nome}`} />}
-    </Card>;
+      {showImageViewer && (
+        <ImageViewer 
+          imageUrl={account.account_screenshot_url} 
+          isOpen={showImageViewer} 
+          onClose={() => setShowImageViewer(false)} 
+          title={`Screenshot da conta ${account.nome}`} 
+        />
+      )}
+    </Card>
+  );
 });
+
 AccountCard.displayName = "AccountCard";
+
+export { AccountCard };
 export default AccountCard;
