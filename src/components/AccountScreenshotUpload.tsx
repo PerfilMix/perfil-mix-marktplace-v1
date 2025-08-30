@@ -1,106 +1,107 @@
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useImageUpload } from "@/hooks/useImageUpload";
-import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { accounts } from "../data/accounts";
+import { ArrowLeft, ShoppingCart } from "lucide-react";
 
-interface AccountScreenshotUploadProps {
-  currentImageUrl?: string;
-  onImageUpload: (imageUrl: string | null) => void;
-  required?: boolean;
-}
-
-const AccountScreenshotUpload = ({
-  currentImageUrl,
-  onImageUpload,
-  required = false
-}: AccountScreenshotUploadProps) => {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(currentImageUrl || null);
-  const { uploadImage, uploading } = useImageUpload();
-
-  // Sincroniza estado interno com a prop do pai
-  useEffect(() => {
-    setPreviewUrl(currentImageUrl || null);
-  }, [currentImageUrl]);
-
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const imageUrl = await uploadImage(file, "account-profiles");
-    if (imageUrl) {
-      setPreviewUrl(imageUrl);
-      onImageUpload(imageUrl); // atualiza o estado do pai
-    }
-  };
-
-  const handleRemoveImage = () => {
-    setPreviewUrl(null);
-    onImageUpload(null);
-  };
+export const AccountDetails = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  
+  const account = accounts.find(acc => acc.id === id);
+  
+  if (!account) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <h1 className="text-2xl font-bold text-foreground mb-4">Conta não encontrada</h1>
+        <Button onClick={() => navigate("/")} variant="outline">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Voltar ao início
+        </Button>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-4">
-      <Label htmlFor="account-screenshot" className="text-white">
-        Screenshot da Conta {required && <span className="text-red-500">*</span>}
-      </Label>
-
-      <div className="flex items-center gap-4">
-        <div className="h-16 w-16 border-2 border-dashed border-tech-border rounded-lg flex items-center justify-center bg-tech-darker">
-          {previewUrl ? (
-            <img
-              src={previewUrl}
-              alt="Screenshot da conta"
-              className="w-full h-full object-cover rounded-lg"
-            />
-          ) : (
-            <ImageIcon className="h-8 w-8 text-gray-400" />
+    <div className="container mx-auto px-4 py-8">
+      <Button 
+        onClick={() => navigate("/")} 
+        variant="ghost" 
+        className="mb-6"
+      >
+        <ArrowLeft className="w-4 h-4 mr-2" />
+        Voltar
+      </Button>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div>
+          {account.image && (
+            <div className="mb-6">
+              <img 
+                src={account.image} 
+                alt={`Screenshot da conta ${account.username}`}
+                className="w-full rounded-lg border border-border"
+                onError={(e) => {
+                  console.error(`Erro ao carregar imagem: ${account.image}`);
+                  e.currentTarget.style.display = 'none';
+                }}
+                onLoad={() => {
+                  console.log(`Imagem carregada com sucesso: ${account.image}`);
+                }}
+              />
+            </div>
           )}
         </div>
-
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            disabled={uploading}
-            onClick={() => document.getElementById("account-screenshot")?.click()}
-            className="border-tech-border text-white hover:bg-tech-secondary/20"
-          >
-            <Upload className="h-4 w-4 mr-2" />
-            {uploading ? "Carregando..." : "Carregar Screenshot"}
-          </Button>
-
-          {previewUrl && (
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={handleRemoveImage}
-              className="border-tech-border text-white hover:bg-tech-secondary/20"
-            >
-              <X className="h-4 w-4 mr-2" />
-              Remover
-            </Button>
-          )}
+        
+        <div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl flex items-center gap-2">
+                {account.username}
+                <Badge variant="secondary">{account.platform}</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">País:</p>
+                  <Badge variant="outline" className="mt-1">{account.country}</Badge>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Seguidores:</p>
+                  <p className="font-bold text-lg">{account.followers}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Nicho:</p>
+                  <Badge variant="outline" className="mt-1">{account.niche}</Badge>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Monetizada:</p>
+                  <p className="font-medium">{account.monetized ? "Sim" : "Não"}</p>
+                </div>
+              </div>
+              
+              {account.platform === "TikTok" && (
+                <div>
+                  <p className="text-sm text-muted-foreground">TikTok Shop:</p>
+                  <p className="font-medium">{account.tiktokShop ? "Sim" : "Não"}</p>
+                </div>
+              )}
+              
+              <div className="pt-4 border-t border-border">
+                <p className="text-2xl font-bold text-primary mb-4">
+                  Comprar {account.price}
+                </p>
+                <Button className="w-full bg-primary hover:bg-primary/90" size="lg">
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  Comprar Agora
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
-
-      <Input
-        id="account-screenshot"
-        type="file"
-        accept="image/jpeg,image/png,image/webp"
-        onChange={handleFileUpload}
-        disabled={uploading}
-        className="hidden"
-      />
-
-      <p className="text-sm text-gray-400">
-        JPG, PNG ou WebP. Máximo 2MB. {required && "Campo obrigatório."}
-      </p>
     </div>
   );
 };
-
-export default AccountScreenshotUpload;
